@@ -19,7 +19,7 @@ const app = Vue.createApp({
     },
     specialAttackLimiter() {
       return this.currentRound % 3 !== 0;
-    }
+    },
   },
   methods: {
     attackMonster() {
@@ -30,6 +30,12 @@ const app = Vue.createApp({
     },
     specialAttackMonster() {
       this._doDmg(25, 10);
+    },
+    healPlayer(){
+      this.currentRound++;
+      this.playerHealth += getDmg(20, 8);
+      if(this.playerHealth > 100) this.playerHealth = 100;
+      this.attackPlayer();
     },
 
     _doDmg(max, min){
