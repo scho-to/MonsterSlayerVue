@@ -7,7 +7,8 @@ const app = Vue.createApp({
     return {
       playerHealth: 100,
       monsterHealth: 100,
-      currentRound: 0
+      currentRound: 0,
+      winner: null
     };
   },
   computed: {
@@ -20,6 +21,26 @@ const app = Vue.createApp({
     specialAttackLimiter() {
       return this.currentRound % 3 !== 0;
     },
+  },
+  watch: {
+    playerHealth(value){
+      if (value <= 0 && this.monsterHealth <= 0){
+        //draw
+        this.winner = "draw";
+      } else if(value <= 0) {
+        //you lost!
+        this.winner = "monster";
+      }
+    },
+    monsterHealth(value){
+      if (value <= 0 && this.playerHealth <= 0){
+        //draw
+        this.winner = "draw";
+      } else if(value <= 0) {
+        //you won!
+        this.winner = "player";
+      }
+    }
   },
   methods: {
     attackMonster() {
@@ -36,6 +57,15 @@ const app = Vue.createApp({
       this.playerHealth += getDmg(20, 8);
       if(this.playerHealth > 100) this.playerHealth = 100;
       this.attackPlayer();
+    },
+    surrender() {
+      this.playerHealth = 0;
+    },
+    resetGame() {
+      this.playerHealth = 100;
+      this.monsterHealth = 100;
+      this.winner = null;
+      this.currentRound = 0;
     },
 
     _doDmg(max, min){
