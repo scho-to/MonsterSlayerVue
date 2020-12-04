@@ -14,9 +14,11 @@ const app = Vue.createApp({
   },
   computed: {
     monsterBarStyles(){
+      if (this.monsterHealth < 0) return {width: '0%'};
       return {width: this.monsterHealth + '%'};
     },
     playerBarStyles() {
+      if (this.playerHealth < 0) return {width: '0%'};
       return {width: this.playerHealth + '%'};
     },
     specialAttackLimiter() {
@@ -82,7 +84,7 @@ const app = Vue.createApp({
       this.attackPlayer();
     },
     _log(message){
-      this.logs.push("Round " + this.currentRound + ": " + message);
+      this.logs.unshift("Round " + this.currentRound + ": " + message);
       setTimeout(() => {
         this.logs.pop();
       }, 3000);
