@@ -42,9 +42,13 @@
         <button @click="healPlayer">HEAL</button>
         <button @click="surrender">SURRENDER</button>
       </section>
-      <section id="log" class="container">
+      <section id="log" class="container" v-if="logs.length >= 1">
         <h2>Battle Log</h2>
-        <ul></ul>
+        <ul>
+          <li v-for="log in logs">
+            {{log}}
+          </li>
+        </ul>
       </section>
     </div>
   </body>

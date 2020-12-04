@@ -8,7 +8,8 @@ const app = Vue.createApp({
       playerHealth: 100,
       monsterHealth: 100,
       currentRound: 0,
-      winner: null
+      winner: null,
+      logs: []
     };
   },
   computed: {
@@ -45,33 +46,46 @@ const app = Vue.createApp({
   methods: {
     attackMonster() {
       this._doDmg(12, 5);
+      this._log("Player attacks Monster");
     },
     attackPlayer() {
       this.playerHealth -= getDmg(15, 8);
+      this._log("Monster attacks Player");
     },
     specialAttackMonster() {
       this._doDmg(25, 10);
+      this._log("Player attacks Monster");
     },
     healPlayer(){
       this.currentRound++;
       this.playerHealth += getDmg(20, 8);
       if(this.playerHealth > 100) this.playerHealth = 100;
       this.attackPlayer();
+      this._log("Player heals");
     },
     surrender() {
       this.playerHealth = 0;
+      this._log("Player surrenders");
     },
     resetGame() {
       this.playerHealth = 100;
       this.monsterHealth = 100;
       this.winner = null;
       this.currentRound = 0;
+      this._log("Game has been reset");
     },
+
 
     _doDmg(max, min){
       this.currentRound++;
       this.monsterHealth -= getDmg(max, min);
       this.attackPlayer();
+    },
+    _log(message){
+      this.logs.push("Round " + this.currentRound + ": " + message);
+      setTimeout(() => {
+        this.logs.pop();
+      }, 3000);
     }
   }
 }).mount("#game");
